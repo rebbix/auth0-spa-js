@@ -1,6 +1,6 @@
 {
   "author": "Auth0",
-  "name": "@fixly/auth0-spa-js",
+  "name": "rebbix-auth0-spa-js",
   "description": "Auth0 SDK for Single Page Applications using Authorization Code Grant Flow with PKCE",
   "license": "MIT",
   "version": "1.21.1",
