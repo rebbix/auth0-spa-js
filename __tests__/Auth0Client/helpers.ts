@@ -97,7 +97,7 @@ export const assertUrlEquals = (
   }
 };
 
-export const fetchResponse = (ok, json) =>
+export const fetchResponse = (ok: boolean, json: any) =>
   Promise.resolve({
     ok,
     json: () => Promise.resolve(json)
@@ -162,7 +162,7 @@ export const setupWithBasePathFn = (mockVerify: jest.Mock) => {
   };
 };
 
-const processDefaultLoginWithRedirectOptions = config => {
+const processDefaultLoginWithRedirectOptions = (config: { token?: { success?: boolean; response?: any }; authorize?: { code?: string; state?: string; error?: string; errorDescription?: string }; useHash?: boolean; customCallbackUrl?: string }) => {
   const defaultTokenResponseOptions = {
     success: true,
     response: {}
@@ -188,9 +188,9 @@ const processDefaultLoginWithRedirectOptions = config => {
   };
 };
 
-export const loginWithRedirectFn = (mockWindow, mockFetch) => {
+export const loginWithRedirectFn = (mockWindow: any, mockFetch: jest.Mock<any, any>) => {
   return async (
-    auth0,
+    auth0: any,
     options: RedirectLoginOptions = undefined,
     testConfig: {
       token?: {
@@ -265,7 +265,7 @@ export const loginWithRedirectFn = (mockWindow, mockFetch) => {
   };
 };
 
-const processDefaultLoginWithPopupOptions = config => {
+const processDefaultLoginWithPopupOptions = (config: { token?: { success?: boolean; response?: any }; authorize?: { response?: any }; delay?: number }) => {
   const defaultTokenResponseOptions = {
     success: true,
     response: {}
@@ -299,7 +299,7 @@ export const setupMessageEventLister = (
   response: any = {},
   delay = 0
 ) => {
-  mockWindow.addEventListener.mockImplementationOnce((type, cb) => {
+  mockWindow.addEventListener.mockImplementationOnce((type: string, cb: (arg0: { data: { type: string; response: any; }; }) => void) => {
     if (type === 'message') {
       setTimeout(() => {
         cb({
@@ -320,9 +320,9 @@ export const setupMessageEventLister = (
   });
 };
 
-export const loginWithPopupFn = (mockWindow, mockFetch) => {
+export const loginWithPopupFn = (mockWindow: any, mockFetch: jest.Mock<any, any>) => {
   return async (
-    auth0,
+    auth0: any,
     options: PopupLoginOptions = undefined,
     config: PopupConfigOptions = undefined,
     testConfig: {
@@ -366,8 +366,8 @@ export const loginWithPopupFn = (mockWindow, mockFetch) => {
   };
 };
 
-export const checkSessionFn = mockFetch => {
-  return async auth0 => {
+export const checkSessionFn = (mockFetch: jest.Mock<any, any>) => {
+  return async (auth0: any) => {
     mockFetch.mockResolvedValueOnce(
       fetchResponse(true, {
         id_token: TEST_ID_TOKEN,
@@ -380,7 +380,7 @@ export const checkSessionFn = mockFetch => {
   };
 };
 
-const processDefaultGetTokenSilentlyOptions = config => {
+const processDefaultGetTokenSilentlyOptions = (config: { token?: { success?: boolean; response?: any } }) => {
   const defaultTokenResponseOptions = {
     success: true,
     response: {}
@@ -395,9 +395,9 @@ const processDefaultGetTokenSilentlyOptions = config => {
   };
 };
 
-export const getTokenSilentlyFn = (mockWindow, mockFetch) => {
+export const getTokenSilentlyFn = (mockWindow: any, mockFetch: jest.Mock<any, any>) => {
   return async (
-    auth0,
+    auth0: any,
     options: GetTokenSilentlyOptions = undefined,
     testConfig: {
       token?: {
