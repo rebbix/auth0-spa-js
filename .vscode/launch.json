@@ -25,6 +25,14 @@
       "internalConsoleOptions": "neverOpen",
       "disableOptimisticBPs": true,
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Build",
+      "program": "${workspaceFolder}/node_modules/.bin/rollup",
+      "args": ["-m", "-c"],
+      "console": "integratedTerminal"
     }
   ]
 }
