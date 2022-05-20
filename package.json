@@ -1,6 +1,6 @@
 {
   "author": "Auth0",
-  "name": "@auth0/auth0-spa-js",
+  "name": "@fixly/auth0-spa-js",
   "description": "Auth0 SDK for Single Page Applications using Authorization Code Grant Flow with PKCE",
   "license": "MIT",
   "version": "1.21.1",
@@ -28,8 +28,7 @@
     "serve:coverage": "serve coverage/lcov-report -n",
     "serve:stats": "serve bundle-stats -n",
     "print-bundle-size": "node ./scripts/print-bundle-size",
-    "prepack": "npm run build && node ./scripts/prepack",
-    "postinstall": "npm run prepack"
+    "prepack": "npm run build && node ./scripts/prepack"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^2.4.2",

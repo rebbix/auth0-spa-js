@@ -4,5 +4,7 @@ test
 static
 .gitignore
 .npmignore
+rollup.config.js
+tsconfig.json
 .rpt2_cache
 .vscode
