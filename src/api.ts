@@ -6,6 +6,7 @@ import { createQueryParams } from './utils';
 export async function oauthToken(
   {
     baseUrl,
+    basePath,
     timeout,
     audience,
     scope,
@@ -20,7 +21,7 @@ export async function oauthToken(
     : JSON.stringify(options);
 
   return await getJSON<TokenEndpointResponse>(
-    `${baseUrl}/oauth/token`,
+    `${baseUrl}${basePath || '/oauth'}/token`,
     timeout,
     audience || 'default',
     scope,

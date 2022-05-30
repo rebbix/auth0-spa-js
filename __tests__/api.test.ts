@@ -71,6 +71,41 @@ describe('oauthToken', () => {
     expect(mockFetch.mock.calls[0][1].signal).not.toBeUndefined();
   });
 
+  it('calls oauth/token with the correct url when override base path', async () => {
+    mockFetch.mockReturnValue(
+      new Promise(res =>
+        res({ ok: true, json: () => new Promise(ress => ress(true)) })
+      )
+    );
+    const auth0Client = {
+      name: 'auth0-spa-js',
+      version: version
+    };
+
+    await oauthToken({
+      redirect_uri: 'http://localhost',
+      grant_type: 'authorization_code',
+      baseUrl: 'https://test.com',
+      basePath: '/oauth2',
+      client_id: 'client_idIn',
+      code: 'codeIn',
+      code_verifier: 'code_verifierIn',
+      auth0Client
+    });
+
+    expect(mockFetch).toBeCalledWith('https://test.com/oauth2/token', {
+      body: '{"redirect_uri":"http://localhost","grant_type":"authorization_code","client_id":"client_idIn","code":"codeIn","code_verifier":"code_verifierIn"}',
+      headers: {
+        'Content-Type': 'application/json',
+        'Auth0-Client': btoa(JSON.stringify(auth0Client))
+      },
+      method: 'POST',
+      signal: abortController.signal
+    });
+
+    expect(mockFetch.mock.calls[0][1].signal).not.toBeUndefined();
+  });
+
   it('calls oauth/token with a worker with the correct url', async () => {
     mockFetch.mockReturnValue(
       new Promise(res =>

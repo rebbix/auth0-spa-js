@@ -492,6 +492,7 @@ export interface TokenEndpointOptions {
   timeout?: number;
   auth0Client: any;
   useFormData?: boolean;
+  basePath?: string;
   [key: string]: any;
 }
 
