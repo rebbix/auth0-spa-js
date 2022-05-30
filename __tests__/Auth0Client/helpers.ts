@@ -132,13 +132,17 @@ export const setupFn = (mockVerify: jest.Mock) => {
   };
 };
 
-export const setupWithBasePathFn = (mockVerify: jest.Mock) => {
+export const setupWithEndpointsFn = (mockVerify: jest.Mock) => {
   return (config?: Partial<Auth0ClientOptions>, claims?: Partial<IdToken>) => {
     const auth0 = new Auth0Client(
       Object.assign(
         {
           domain: TEST_DOMAIN,
-          basePath: TEST_BASE_PATH,
+          endpoints: {
+            authorize: `${TEST_BASE_PATH}/authorize`,
+            token: `${TEST_BASE_PATH}/token`,
+            logout: `${TEST_BASE_PATH}/logout`,
+          },
           client_id: TEST_CLIENT_ID,
           redirect_uri: TEST_REDIRECT_URI
         },

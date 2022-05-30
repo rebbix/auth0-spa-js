@@ -114,12 +114,16 @@ export interface Auth0ClientOptions extends BaseLoginOptions {
    * (when using [custom domains](https://auth0.com/docs/custom-domains))
    */
   domain: string;
+
   /**
-   * Your Auth API base path, if you auth endpoints are not mapped to the root of your domain,
-   *  for example `https://example.auth0.com/myauthapi/authorize` — domain: `https://example.auth0.com`,
-   *  basePath: `/myauthapi`, authorize endpoint: `/authorize`
+   * Customize relative endpoint URL.
    */
-  basePath?: string;
+  endpoints?: {
+    authorize: string;
+    logout: string;
+    token: string;
+  }
+
   /**
    * The issuer to be used for validation of JWTs, optionally defaults to the domain above
    */
@@ -492,7 +496,7 @@ export interface TokenEndpointOptions {
   timeout?: number;
   auth0Client: any;
   useFormData?: boolean;
-  basePath?: string;
+  endpoint?: string;
   [key: string]: any;
 }
 

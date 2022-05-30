@@ -7,7 +7,7 @@ import * as scope from '../../src/scope';
 
 // @ts-ignore
 
-import { assertUrlEquals, loginWithRedirectFn, setupFn } from './helpers';
+import { assertUrlEquals, loginWithRedirectFn, setupFn, setupWithEndpointsFn } from "./helpers"
 
 import { TEST_CLIENT_ID, TEST_CODE_CHALLENGE, TEST_DOMAIN } from '../constants';
 import { ICache } from '../../src/cache';
@@ -34,6 +34,7 @@ jest
 jest.spyOn(utils, 'runPopup');
 
 const setup = setupFn(mockVerify);
+const setupWithEndpoints = setupWithEndpointsFn(mockVerify);
 
 describe('Auth0Client', () => {
   const oldWindowLocation = window.location;
@@ -174,6 +175,16 @@ describe('Auth0Client', () => {
       const url = auth0.buildLogoutUrl();
 
       assertUrlEquals(url, TEST_DOMAIN, '/v2/logout', {
+        client_id: TEST_CLIENT_ID
+      });
+    });
+
+    it('creates correct query params with custom endpoints', async () => {
+      const auth0 = setupWithEndpoints();
+
+      const url = auth0.buildLogoutUrl();
+
+      assertUrlEquals(url, TEST_DOMAIN, '/test-base-path/logout', {
         client_id: TEST_CLIENT_ID
       });
     });

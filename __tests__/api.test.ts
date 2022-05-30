@@ -86,7 +86,7 @@ describe('oauthToken', () => {
       redirect_uri: 'http://localhost',
       grant_type: 'authorization_code',
       baseUrl: 'https://test.com',
-      basePath: '/oauth2',
+      endpoint: '/oauth2/token',
       client_id: 'client_idIn',
       code: 'codeIn',
       code_verifier: 'code_verifierIn',

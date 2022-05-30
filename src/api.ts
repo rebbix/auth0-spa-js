@@ -1,12 +1,12 @@
 import { TokenEndpointOptions, TokenEndpointResponse } from './global';
-import { DEFAULT_AUTH0_CLIENT } from './constants';
+import { DEFAULT_AUTH0_CLIENT, DEFAULT_ENDPOINT_TOKEN } from "./constants"
 import { getJSON } from './http';
 import { createQueryParams } from './utils';
 
 export async function oauthToken(
   {
     baseUrl,
-    basePath,
+    endpoint,
     timeout,
     audience,
     scope,
@@ -21,7 +21,7 @@ export async function oauthToken(
     : JSON.stringify(options);
 
   return await getJSON<TokenEndpointResponse>(
-    `${baseUrl}${basePath || '/oauth'}/token`,
+    `${baseUrl}${endpoint || DEFAULT_ENDPOINT_TOKEN}`,
     timeout,
     audience || 'default',
     scope,

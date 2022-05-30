@@ -22,7 +22,7 @@ import {
   fetchResponse,
   getTokenSilentlyFn,
   loginWithRedirectFn,
-  setupFn, setupWithBasePathFn
+  setupFn, setupWithEndpointsFn
 } from "./helpers"
 
 import {
@@ -67,7 +67,7 @@ jest.spyOn(http, 'switchFetch');
 
 const assertPost = assertPostFn(mockFetch);
 const setup = setupFn(mockVerify);
-const setupWithBasePath = setupWithBasePathFn(mockVerify);
+const setupWithEndpoints = setupWithEndpointsFn(mockVerify);
 const loginWithRedirect = loginWithRedirectFn(mockWindow, mockFetch);
 const getTokenSilently = getTokenSilentlyFn(mockWindow, mockFetch);
 
@@ -164,7 +164,7 @@ describe('Auth0Client', () => {
     });
 
     it.only('calls the authorize endpoint with base path using the correct params', async () => {
-      const auth0 = setupWithBasePath();
+      const auth0 = setupWithEndpoints();
 
       jest.spyOn(<any>utils, 'runIframe').mockResolvedValue({
         access_token: TEST_ACCESS_TOKEN,

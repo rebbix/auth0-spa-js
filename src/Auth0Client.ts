@@ -47,8 +47,8 @@ import {
   DEFAULT_AUTH0_CLIENT,
   INVALID_REFRESH_TOKEN_ERROR_MESSAGE,
   DEFAULT_NOW_PROVIDER,
-  DEFAULT_FETCH_TIMEOUT_MS
-} from './constants';
+  DEFAULT_FETCH_TIMEOUT_MS, DEFAULT_ENDPOINT_AUTHORIZE, DEFAULT_ENDPOINT_TOKEN, DEFAULT_ENDPOINT_LOGOUT
+} from "./constants"
 
 import {
   Auth0ClientOptions,
@@ -189,11 +189,16 @@ const getCustomInitialOptions = (
  * Auth0 SDK for Single Page Applications using [Authorization Code Grant Flow with PKCE](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant-pkce).
  */
 export default class Auth0Client {
+  private readonly endpoints: {
+    authorize: string;
+    logout: string;
+    token: string;
+  };
+
   private readonly transactionManager: TransactionManager;
   private readonly cacheManager: CacheManager;
   private readonly customOptions: BaseLoginOptions;
   private readonly domainUrl: string;
-  private readonly basePath: string | undefined;
   private readonly tokenIssuer: string;
   private readonly defaultScope: string;
   private readonly scope: string;
@@ -272,7 +277,16 @@ export default class Auth0Client {
     );
 
     this.domainUrl = getDomain(this.options.domain);
-    this.basePath = this.options.basePath;
+
+    this.endpoints = this.options.endpoints ? {
+      token: this.options.endpoints.token || DEFAULT_ENDPOINT_TOKEN,
+      authorize: this.options.endpoints.authorize || DEFAULT_ENDPOINT_AUTHORIZE,
+      logout: this.options.endpoints.logout || DEFAULT_ENDPOINT_LOGOUT,
+    } : {
+      token: DEFAULT_ENDPOINT_TOKEN,
+      authorize: DEFAULT_ENDPOINT_AUTHORIZE,
+      logout: DEFAULT_ENDPOINT_LOGOUT,
+    }
 
     this.tokenIssuer = getTokenIssuer(this.options.issuer, this.domainUrl);
 
@@ -308,7 +322,7 @@ export default class Auth0Client {
     const auth0Client = encodeURIComponent(
       btoa(JSON.stringify(this.options.auth0Client || DEFAULT_AUTH0_CLIENT))
     );
-    return `${this.domainUrl}${this.basePath || ''}${path}&auth0Client=${auth0Client}`;
+    return `${this.domainUrl}${path}&auth0Client=${auth0Client}`;
   }
 
   private _getParams(
@@ -336,7 +350,7 @@ export default class Auth0Client {
       domain,
       leeway,
       httpTimeoutInSeconds,
-      basePath,
+      endpoints,
       ...loginOptions
     } = this.options;
 
@@ -359,7 +373,7 @@ export default class Auth0Client {
   }
 
   private _authorizeUrl(authorizeOptions: AuthorizeOptions) {
-    return this._url(`/authorize?${createQueryParams(authorizeOptions)}`);
+    return this._url(`${this.endpoints.authorize}?${createQueryParams(authorizeOptions)}`);
   }
 
   private async _verifyIdToken(
@@ -526,7 +540,7 @@ export default class Auth0Client {
         audience: params.audience,
         scope: params.scope,
         baseUrl: this.domainUrl,
-        basePath: this.basePath,
+        endpoint: this.endpoints.token,
         client_id: this.options.client_id,
         code_verifier,
         code: codeResult.code,
@@ -694,7 +708,7 @@ export default class Auth0Client {
       audience: transaction.audience,
       scope: transaction.scope,
       baseUrl: this.domainUrl,
-      basePath: this.basePath,
+      endpoint: this.endpoints.token,
       client_id: this.options.client_id,
       code_verifier: transaction.code_verifier,
       grant_type: 'authorization_code',
@@ -1009,7 +1023,7 @@ export default class Auth0Client {
 
     const { federated, ...logoutOptions } = options;
     const federatedQuery = federated ? `&federated` : '';
-    const url = this._url(`/v2/logout?${createQueryParams(logoutOptions)}`);
+    const url = this._url(`${this.endpoints.logout}?${createQueryParams(logoutOptions)}`);
 
     return url + federatedQuery;
   }
@@ -1132,7 +1146,7 @@ export default class Auth0Client {
           scope,
           audience,
           baseUrl: this.domainUrl,
-          basePath: this.basePath,
+          endpoint: this.endpoints.token,
           client_id: this.options.client_id,
           code_verifier,
           code: codeResult.code,
@@ -1222,7 +1236,7 @@ export default class Auth0Client {
           audience,
           scope,
           baseUrl: this.domainUrl,
-          basePath: this.basePath,
+          endpoint: this.endpoints.token,
           client_id: this.options.client_id,
           grant_type: 'refresh_token',
           refresh_token: cache && cache.refresh_token,

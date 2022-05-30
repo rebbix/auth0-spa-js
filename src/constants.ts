@@ -78,3 +78,7 @@ export const DEFAULT_AUTH0_CLIENT = {
 };
 
 export const DEFAULT_NOW_PROVIDER = () => Date.now();
+
+export const DEFAULT_ENDPOINT_AUTHORIZE = '/authorize';
+export const DEFAULT_ENDPOINT_TOKEN = '/oauth/token';
+export const DEFAULT_ENDPOINT_LOGOUT = '/v2/logout';
