@@ -3,6 +3,12 @@ import { DEFAULT_AUTH0_CLIENT, DEFAULT_ENDPOINT_TOKEN } from "./constants"
 import { getJSON } from './http';
 import { createQueryParams } from './utils';
 
+function getEndpointUrl(endpoint: string, baseUrl: string) {
+  if (endpoint.startsWith('http')) return endpoint
+
+  return `${baseUrl}${endpoint || DEFAULT_ENDPOINT_TOKEN}`
+}
+
 export async function oauthToken(
   {
     baseUrl,
@@ -21,7 +27,7 @@ export async function oauthToken(
     : JSON.stringify(options);
 
   return await getJSON<TokenEndpointResponse>(
-    `${baseUrl}${endpoint || DEFAULT_ENDPOINT_TOKEN}`,
+    getEndpointUrl(endpoint, baseUrl),
     timeout,
     audience || 'default',
     scope,
