@@ -18,6 +18,8 @@ export async function oauthToken(
     scope,
     auth0Client,
     useFormData,
+    endpoints,
+    ignore_nonce,
     ...options
   }: TokenEndpointOptions,
   worker?: Worker
