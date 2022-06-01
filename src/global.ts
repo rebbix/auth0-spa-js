@@ -125,6 +125,11 @@ export interface Auth0ClientOptions extends BaseLoginOptions {
   }
 
   /**
+   * When `true`, does not check id token for nonce.
+   */
+  ignore_nonce?: boolean;
+
+  /**
    * The issuer to be used for validation of JWTs, optionally defaults to the domain above
    */
   issuer?: string;

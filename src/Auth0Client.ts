@@ -210,7 +210,7 @@ export default class Auth0Client {
   private readonly httpTimeoutMs: number;
 
   cacheLocation: CacheLocation;
-  private worker: Worker;
+  private readonly worker: Worker;
 
   constructor(private options: Auth0ClientOptions) {
     typeof window !== 'undefined' && validateCrypto();
@@ -378,10 +378,11 @@ export default class Auth0Client {
 
   private async _verifyIdToken(
     id_token: string,
-    nonce?: string,
+    nonceIn?: string,
     organizationId?: string
   ) {
     const now = await this.nowProvider();
+    const nonce = this.options.ignore_nonce ? undefined : nonceIn;
 
     return verifyIdToken({
       iss: this.tokenIssuer,
